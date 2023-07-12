@@ -45,7 +45,7 @@ exports.login = async (req, res) => {
         if (!user) {
             return res.status(401).json({
                 status: 'fail',
-                message: '1.Invalid credential.'
+                message: 'Invalid credential.'
             });
         }
         
@@ -53,7 +53,7 @@ exports.login = async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({
                 status: 'fail',
-                message: '2.Invalid credential'
+                message: 'Invalid credential'
             });
         }
 
@@ -160,35 +160,3 @@ exports.lupaPassword = async (req, res) => {
         res.status(500).send('Server error !');
     }
 };
-
-exports.uploadProfileImage = async (req, res) => {
-    const userId = req.params.userId;
-  
-    try {
-      if (!req.file) {
-        return res.status(400).json({ error: 'No file uploaded' });
-      }
-  
-      const updatedUser = await User.findByIdAndUpdate(
-        userId,
-        { profileImgPath: req.file.path },
-        { new: true, useFindAndModify: false }
-      );
-  
-      if (updatedUser) {
-        res.status(200).json({
-          status: 'success',
-          data: updatedUser,
-        });
-      } else {
-        res.status(404).json({
-          status: 'fail',
-          message: 'User not found',
-        });
-      }
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server error');
-    }
-};
-  
